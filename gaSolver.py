@@ -19,7 +19,6 @@ class GASolver:
         self.dmaxs = dmaxs
         self.crossover_probability = crossover_probability
         self.mutation_probability = mutation_probability
-
         
     def train_damage(self, T):
         zstatic = T.apply(self.influence_line.data)
@@ -77,33 +76,15 @@ class GASolver:
         for pi, di in zip(ps, ds):
             self.population.append(pi)
             self.fitness_vector.append(di)
-
-    def replace_generation(self):
-        ps, ds = [], []
-        for n in range(self.population_size):
-            c1, c2 = self.tournament_selection(), self.tournament_selection()
-            c = self.trainset.crossover_chromosome(c1, c2)
-            d = self.chromosome_damage(c)
-            ps.append(c)
-            ds.append(d)
-        self.population = ps
-        self.fitness_vector = ds
                 
     def terminate_search(self):
         return self.step >= 2000
-    
     
     def get_best_chromosome(self):
         n = np.argmax(self.fitness_vector)
         return self.population[n]
     
-    @property
-    def best_train(self):
-        return self.trainset.decode(self.best_chromosome)
-    
-    def get_best_fitness(self):
-        return max(self.fitness_vector)
-                
+    @property         
     def run(self):
         self.time_start = time.time()
         self.solution_history = []        

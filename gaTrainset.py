@@ -83,6 +83,19 @@ class GATrainSet(mdtrain.TrainSet):
             if len([j for j in ch if j >= 0]) >= self.Nmin + 1:
                 break
         return ch
+        
+    def inversion_mutate_chromosome(self, chromosome):
+        while True:
+            ch = chromosome[:]
+            n = np.random.randint(0, len(ch))
+            if n == 0:
+                ch[0] = np.random.randint(0, len(self.locomotives))
+                pass
+            else:
+                ch[:] = ch[:n+1] + list(reversed(ch[n+1:]))
+            if len([j for j in ch if j >= 0]) >= self.Nmin + 1:
+                break
+        return ch
     
     def uniform_crossover_chromosome(self, chromosome1, chromosome2):
         while True:
@@ -101,19 +114,6 @@ class GATrainSet(mdtrain.TrainSet):
             n = np.random.randint(0, len(chromosome1), size=2)
             n1, n2 = min(n), max(n)
             ch = chromosome1[:n1] + chromosome2[n1:n2] + chromosome1[n2:]
-            if len([j for j in ch if j >= 0]) >= self.Nmin + 1:
-                break
-        return ch
-    
-    def inversion_mutate_chromosome(self, chromosome):
-        while True:
-            ch = chromosome[:]
-            n = np.random.randint(0, len(ch))
-            if n == 0:
-                ch[0] = np.random.randint(0, len(self.locomotives))
-                pass
-            else:
-                ch[:] = ch[:n+1] + list(reversed(ch[n+1:]))
             if len([j for j in ch if j >= 0]) >= self.Nmin + 1:
                 break
         return ch
